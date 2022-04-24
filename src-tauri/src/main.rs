@@ -44,11 +44,11 @@ fn get_adb_devices() -> Result<Vec<ADBDevice>, KaiwareError> {
 }
 
 #[tauri::command]
-fn get_app_state(state: tauri::State<AppState>) -> String {
-    format!("{:?}", state)
+fn get_app_state(state: tauri::State<AppState>) -> &AppState {
+    state.inner()
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct AppState {
     has_auto_detect_usb: bool,
 }
