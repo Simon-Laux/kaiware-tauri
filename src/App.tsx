@@ -1,34 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
-import logo from "./logo.svg";
+import React, { useState } from "react";
 import "./App.css";
-import { invoke } from "@tauri-apps/api/tauri";
 import { useStore } from "./stores/AppState";
+import { DeviceScreen } from "./screens/DeviceScreen";
+import { HomeScreen } from "./screens/HomeScreen";
 
 function App() {
   const appState = useStore();
 
-  const [app_state_string, set_app_state] = useState<TauriAppState | null>(
-    null
-  );
-
-  useEffect(() => {
-    invoke("get_app_state").then((v) => set_app_state(v as TauriAppState));
-  }, []);
+  const [selectedDevice, selectDevice] = useState<null | string>();
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{app_state_string && JSON.stringify(app_state_string)}</p>
+        <p>
+          {appState.tauri_app_info && JSON.stringify(appState.tauri_app_info)}
+        </p>
         <button onClick={appState.manualRefresh}>refresh devices</button>
-        <h4>Devices:</h4>
-        {appState.devices.map((device) => (
-          <div key={device.serial}>
-            {device.serial} - {device.adbInfo.device}, {device.adbInfo.model} [
-            {device.isConnected ? "Connected" : "Disconnected"}]
-          </div>
-        ))}
       </header>
+      {selectedDevice && (
+        <button onClick={(_) => selectDevice(null)}>Back</button>
+      )}
+      {selectedDevice ? (
+        <DeviceScreen device_id={selectedDevice} />
+      ) : (
+        <HomeScreen
+          selectDevice={(serial) => {
+            selectDevice(serial);
+          }}
+        />
+      )}
     </div>
   );
 }

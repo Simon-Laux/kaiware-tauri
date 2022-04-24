@@ -15,14 +15,17 @@ interface Device {
 }
 
 interface AppState {
+  tauri_app_info: TauriAppState;
   devices: Device[];
   updateConnections: (currentADBDevices: ADBDevice[]) => void;
   manualRefresh: () => Promise<void>;
 }
 
+// see https://github.com/pmndrs/zustand for how work with zustand
 export const useStore = create<AppState>()(
   devtools(
     persist((set, get) => ({
+      tauri_app_info: { has_auto_detect_usb: false },
       devices: [],
       //increase: (by) => set((state) => ({ bears: state.bears + by })),
       updateConnections: (currentADBDevices) =>
@@ -66,6 +69,10 @@ function sleep(time: number) {
 
 async function setup() {
   let app_state: TauriAppState = await invoke("get_app_state");
+
+  unstable_batchedUpdates(() => {
+    useStore.setState((state) => ({ ...state, tauri_app_info: app_state }));
+  });
 
   if (app_state.has_auto_detect_usb) {
     // if autodetect usb is availible set it up
