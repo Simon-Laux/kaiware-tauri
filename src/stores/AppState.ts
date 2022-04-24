@@ -12,6 +12,7 @@ export interface Device {
   isConnected: boolean;
   /** optional information we might get from adb */
   adbInfo: ADBDevice["info"];
+  hasFirefoxOSDebugSocket: boolean;
 }
 
 interface AppState {
@@ -36,10 +37,15 @@ export const useStore = create<AppState>()(
           );
           // check for existing device changes (connect/disconnect)
           for (let device of knownDevices) {
-            device.isConnected =
-              currentADBDevices.findIndex(
-                ({ serial }) => serial === device.serial
-              ) !== -1;
+            let deviceInCurrentDevices = currentADBDevices.find(
+              ({ serial }) => serial === device.serial
+            );
+            device.isConnected = !!deviceInCurrentDevices;
+            if (deviceInCurrentDevices) {
+              device.adbInfo = deviceInCurrentDevices.info;
+              device.hasFirefoxOSDebugSocket =
+                deviceInCurrentDevices.has_firefox_os_socket;
+            }
           }
           // check for new devices
           for (let new_device of currentADBDevices.filter(
@@ -49,6 +55,7 @@ export const useStore = create<AppState>()(
               serial: new_device.serial,
               isConnected: true,
               adbInfo: new_device.info,
+              hasFirefoxOSDebugSocket: new_device.has_firefox_os_socket,
             });
           }
 

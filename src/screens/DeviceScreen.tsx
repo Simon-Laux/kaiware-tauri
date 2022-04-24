@@ -21,7 +21,7 @@ export function DeviceScreen({ device_id }: { device_id: string }) {
       </h2>
 
       <h3>ADB Device Info</h3>
-      <table style={{textAlign: "left"}}>
+      <table style={{ textAlign: "left" }}>
         {Object.keys(device.adbInfo).map((key) => (
           <tr>
             <td>{key}</td>
@@ -30,18 +30,8 @@ export function DeviceScreen({ device_id }: { device_id: string }) {
         ))}
       </table>
 
-      <h3>Portforwarding</h3>
-      <Portforwarding device_id={device_id} />
+      <h3>FirefoxOS / KaiOS Debug socket</h3>
+      <p>{device.hasFirefoxOSDebugSocket ? "found" : "not found"}</p>
     </div>
   );
-}
-
-
-function Portforwarding({ device_id }: { device_id: string }) {
-
-
-
-  return <div>
-    
-  </div>
 }

@@ -7,6 +7,7 @@ type ADBDevice = {
     transport_id?: string;
     usb?: string;
   };
+  has_firefox_os_socket: boolean;
 };
 
 type TauriAppState = {

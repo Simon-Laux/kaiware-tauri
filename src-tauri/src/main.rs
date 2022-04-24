@@ -23,6 +23,7 @@ impl From<DeviceError> for KaiwareError {
 struct ADBDevice {
     serial: String,
     info: BTreeMap<String, String>,
+    has_firefox_os_socket: bool,
 }
 
 #[tauri::command]
@@ -34,13 +35,26 @@ fn get_adb_devices() -> Result<Vec<ADBDevice>, KaiwareError> {
 
     println!("devices: {:?}", devices);
 
-    Ok(devices
-        .iter()
-        .map(|info| ADBDevice {
+    let mut device_info: Vec<ADBDevice> = Vec::new();
+
+    for info in devices {
+        let device = mozdevice::Device::new(
+            mozdevice::Host {
+                ..Default::default()
+            },
+            info.serial.clone(),
+            mozdevice::AndroidStorageInput::Auto,
+        )?;
+        let unix_path = mozdevice::UnixPath::new("/data/local/debugger-socket");
+
+        device_info.push(ADBDevice {
             serial: info.serial.clone(),
             info: info.info.clone(),
-        })
-        .collect())
+            has_firefox_os_socket: device.path_exists(unix_path, false)?,
+        });
+    }
+
+    Ok(device_info)
 }
 
 #[tauri::command]
