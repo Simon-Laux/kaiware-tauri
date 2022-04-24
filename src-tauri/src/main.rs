@@ -86,6 +86,7 @@ fn main() {
 // Useful links
 // - https://tauri.studio/docs/guides/command
 
+mod adb_portforwarding;
 mod usb_hotplug;
 
 impl Drop for AppState {
