@@ -1,0 +1,10 @@
+
+div.device {
+    padding: 15px;
+    margin: 10px;
+}
+
+div.device:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}

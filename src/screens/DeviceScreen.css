@@ -1,0 +1,7 @@
+div.connection-dot {
+    background-color: grey;
+    height: 15px;
+    width: 15px;
+    border-radius: 100%;
+    display: inline-block;
+}

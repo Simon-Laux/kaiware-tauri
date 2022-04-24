@@ -1,4 +1,5 @@
-import { useStore } from "../stores/AppState";
+import { Device, useStore } from "../stores/AppState";
+import "./DeviceScreen.css";
 
 export function DeviceScreen({ device_id }: { device_id: string }) {
   const device = useStore((state) =>
@@ -11,9 +12,36 @@ export function DeviceScreen({ device_id }: { device_id: string }) {
 
   return (
     <div>
-      <h2>
+      <h2 style={device.isConnected ? {} : { color: "grey" }}>
+        <div
+          className={"connection-dot"}
+          style={{ backgroundColor: device.isConnected ? "green" : "red" }}
+        />
         [{device.serial}] {device.adbInfo.model}
       </h2>
+
+      <h3>ADB Device Info</h3>
+      <table style={{textAlign: "left"}}>
+        {Object.keys(device.adbInfo).map((key) => (
+          <tr>
+            <td>{key}</td>
+            <td>{device.adbInfo[key as keyof Device["adbInfo"]]}</td>
+          </tr>
+        ))}
+      </table>
+
+      <h3>Portforwarding</h3>
+      <Portforwarding device_id={device_id} />
     </div>
   );
+}
+
+
+function Portforwarding({ device_id }: { device_id: string }) {
+
+
+
+  return <div>
+    
+  </div>
 }

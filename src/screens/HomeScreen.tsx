@@ -1,5 +1,7 @@
 import { useStore } from "../stores/AppState";
 
+import "./HomeScreen.css";
+
 export function HomeScreen({
   selectDevice,
 }: {
@@ -16,6 +18,7 @@ export function HomeScreen({
           onClick={() => {
             selectDevice(device.serial);
           }}
+          className={"device"}
         >
           {device.serial} - {device.adbInfo.device}, {device.adbInfo.model} [
           {device.isConnected ? "Connected" : "Disconnected"}]

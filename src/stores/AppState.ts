@@ -5,7 +5,7 @@ import { unstable_batchedUpdates } from "react-dom";
 import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-interface Device {
+export interface Device {
   /** the id of the device */
   serial: string;
   /** whether it is connected over adb */
