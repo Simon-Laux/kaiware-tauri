@@ -1466,8 +1466,7 @@ dependencies = [
 [[package]]
 name = "mozdevice"
 version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "853947b2e889c7ce59735b00833e75f27beecca6b2b03116cf1decd57b335ca0"
+source = "git+https://github.com/Simon-Laux/mozdevice-fork#d450b7b8a266a9e2a7ec71dad533dfb968a29726"
 dependencies = [
  "log",
  "once_cell",
